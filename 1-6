@@ -1,0 +1,128 @@
+1)LED
+int led = 12;
+void setup(){
+	pinMode(led,OUTPUT);
+}
+void loop(){
+	digitalWrite(led, HIGH);
+  	delay(200);
+  	digitalWrite(led, LOW);
+  	delay(200);
+}
+
+2)Photo resistor
+const int sensorPin = A0;
+const int ledPin = 9;
+
+int sensorValue = 0;
+int sensorMin = 1023;
+int sensorMax = 0;
+
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH); 
+  
+  // Calibrate the sensor for 5 seconds
+  while (millis() < 5000) {
+    sensorValue = analogRead(sensorPin);
+    
+    if (sensorValue > sensorMax) {
+      sensorMax = sensorValue; 
+    }
+    if (sensorValue < sensorMin) {
+      sensorMin = sensorValue; 
+    }
+    
+    delay(50);
+  }
+  
+  digitalWrite(LED_BUILTIN, LOW);
+}
+
+void loop() {
+  sensorValue = analogRead(sensorPin);
+  sensorValue = map(sensorValue, sensorMin, sensorMax, 0, 255);
+  sensorValue = constrain(sensorValue, 0, 255);
+  analogWrite(ledPin, sensorValue);
+  delay(50);
+}
+3)
+#include "LiquidCrystal.h"
+LiquidCrystal lcd(8,7,6,5,4,3);
+int sensorPin = 0;
+
+void setup() {
+    Serial.begin(9600);
+    lcd.begin(16,2);
+}
+
+void loop() {
+    int reading = analogRead(sensorPin);
+
+    float voltage = reading * 4.68;
+  	voltage /= 1024.0;
+
+    float temperatureC = (voltage - 0.5) * 100;
+    Serial.print(temperatureC);
+    Serial.println(" Degrees C");
+		lcd.setCursor(0,0);
+    	lcd.print("Temperature Value");
+    	lcd.setCursor(0,1);
+    	lcd.print(" Degrees C");
+  		lcd.setCursor(11,1);
+		lcd.print(temperatureC);
+    delay(100);
+}
+4)Servo motor
+#include <Servo.h>
+
+int push = 0;
+
+Servo servo_9;
+
+void setup()
+{
+	pinMode(4, INPUT);
+  	Serial.begin(9600);
+  	
+  	servo_9.attach(9, 500, 2500);
+}
+
+void loop()
+{
+	push = digitalRead(4);
+  	Serial.println(push);
+  	if (push == 1)
+    {
+    	servo_9.write(90);
+    }
+  	else
+    {
+    	servo_9.write(0);
+    }
+  	delay(10);
+}
+5)Traffic
+int animationSpeed=0;
+void setup(){
+	pinMode(13, OUTPUT);
+  	pinMode(12, OUTPUT);
+  	pinMode(11, OUTPUT);
+}
+void loop(){
+	animationSpeed=400;
+  	digitalWrite(13,HIGH);
+  	delay(animationSpeed);
+  	digitalWrite(13,LOW);
+  	delay(animationSpeed);
+  
+  	digitalWrite(12,HIGH);
+  	delay(animationSpeed);
+  	digitalWrite(12,LOW);
+  	delay(animationSpeed);
+  
+  	digitalWrite(11,HIGH);
+  	delay(animationSpeed);
+  	digitalWrite(11,LOW);
+  	delay(animationSpeed);
+}
